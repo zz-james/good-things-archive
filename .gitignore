@@ -4,3 +4,6 @@ backend/plugins/JwtAuth/
 backend/db.ini
 # Pre-migration snapshot of the old vendored-Omeka repo (delete after verifying)
 backend-old/
+# Terminal-session transcripts saved to disk by Claude Code
+2026-06-30-134542-tell-me-what-the-tech-stack-of-this-repo-is-and-w.md
+omeka_jwt.md
