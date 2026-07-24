@@ -1,0 +1,4 @@
+plugins/JwtAuth/.git
+plugins/JwtAuth/vendor
+plugins/JwtAuth/composer.lock
+*.md

@@ -1,0 +1,27 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: omeka_test
+      MYSQL_USER: omeka
+      MYSQL_PASSWORD: omeka
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  test:
+    build:
+      context: .
+      target: test
+    environment:
+      TEST_DB_HOST: db
+      TEST_DB_USER: omeka
+      TEST_DB_PASSWORD: omeka
+      TEST_DB_NAME: omeka_test
+    depends_on:
+      db:
+        condition: service_healthy

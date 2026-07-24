@@ -1,0 +1,17 @@
+<phpunit bootstrap="bootstrap.php"
+         convertErrorsToExceptions="true"
+         convertWarningsToExceptions="true"
+         convertNoticesToExceptions="true"
+         backupGlobals="true">
+    <testsuites>
+        <testsuite name="Core Tests">
+            <directory>suite</directory>
+        </testsuite>
+        <testsuite name="Plugin Tests">
+            <directory>../../plugins/JwtAuth/tests</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <log type="junit" target="log.xml"/>
+    </logging>
+</phpunit>

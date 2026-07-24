@@ -1,0 +1,6 @@
+# JwtAuth plugin is its own git repo (github.com/zz-james/omeka-plugin-JwtAuth)
+backend/plugins/JwtAuth/
+# Runtime-generated
+backend/db.ini
+# Pre-migration snapshot of the old vendored-Omeka repo (delete after verifying)
+backend-old/

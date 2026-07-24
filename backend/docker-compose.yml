@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: omeka
+      MYSQL_USER: omeka
+      MYSQL_PASSWORD: omeka
+    volumes:
+      - db_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  app:
+    build:
+      context: .
+      target: prod
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_USER: omeka
+      DB_PASSWORD: omeka
+      DB_NAME: omeka
+      DB_PREFIX: omeka_
+      # Local dev stack. Production deploys MUST set APPLICATION_ENV=production
+      # and provide a strong JWT_SECRET (>= 32 random chars) via the
+      # environment — the plugin refuses to start with the dev default.
+      APPLICATION_ENV: ${APPLICATION_ENV:-development}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-in-production-xx}
+    depends_on:
+      - db
+    volumes:
+      - files_data:/var/www/html/files
+
+volumes:
+  db_data:
+  files_data:
