@@ -27,12 +27,12 @@ Create the `JwtAuth` Omeka plugin under `backend/plugins/JwtAuth/`. On activatio
 
 ### Acceptance criteria
 
-- [ ] Plugin activates without errors; `jwt_refresh_tokens` table exists after activation
-- [ ] `POST /auth/login` with valid credentials returns 200 + sets `auth_token` and `refresh_token` httponly cookies
-- [ ] `POST /auth/login` with invalid credentials returns 401, no cookies set
-- [ ] `OPTIONS /auth/login` from the frontend origin returns correct CORS headers including `Access-Control-Allow-Credentials: true`
-- [ ] JWT payload contains `user_id`, `role`, `exp` (15 min from issue time)
-- [ ] Refresh token row is written to `jwt_refresh_tokens` with correct `user_id` and `expires_at`
+- [x] Plugin activates without errors; `jwt_refresh_tokens` table exists after activation
+- [x] `POST /auth/login` with valid credentials returns 200 + sets `auth_token` and `refresh_token` httponly cookies
+- [x] `POST /auth/login` with invalid credentials returns 401, no cookies set
+- [x] `OPTIONS /auth/login` from the frontend origin returns correct CORS headers including `Access-Control-Allow-Credentials: true`
+- [x] JWT payload contains `user_id`, `role`, `exp` (15 min from issue time)
+- [x] Refresh token row is written to `jwt_refresh_tokens` with correct `user_id` and `expires_at`
 
 ---
 
@@ -46,12 +46,12 @@ Register a Zend front controller plugin in the `JwtAuth` plugin's `initialize` h
 
 ### Acceptance criteria
 
-- [ ] `GET /api/items` without any cookie returns 200 with public items
-- [ ] `GET /api/items` with a valid `auth_token` cookie returns 200 and the response reflects the authenticated user's permissions
-- [ ] `POST /api/items` without auth returns 403
-- [ ] `POST /api/items` with a valid cookie for an admin-role user returns 200/201
-- [ ] A tampered or expired `auth_token` cookie is rejected (treated as unauthenticated, not 500)
-- [ ] Legacy `?key=` param still authenticates requests when no cookie is present
+- [x] `GET /api/items` without any cookie returns 200 with public items
+- [x] `GET /api/items` with a valid `auth_token` cookie returns 200 and the response reflects the authenticated user's permissions
+- [x] `POST /api/items` without auth returns 403
+- [x] `POST /api/items` with a valid cookie for an admin-role user returns 200/201
+- [x] A tampered or expired `auth_token` cookie is rejected (treated as unauthenticated, not 500)
+- [x] Legacy `?key=` param still authenticates requests when no cookie is present
 
 ---
 
@@ -65,12 +65,12 @@ Add `POST /auth/logout`: validate the `auth_token` cookie, look up the `refresh_
 
 ### Acceptance criteria
 
-- [ ] `GET /auth/me` with valid cookie returns `{id, name, email, role}`
-- [ ] `GET /auth/me` without cookie returns 401
-- [ ] `POST /auth/logout` clears both cookies and marks the refresh token row `revoked = 1`
-- [ ] After logout, the revoked `refresh_token` cookie cannot be used to obtain a new access token
-- [ ] Request with expired `auth_token` + valid `refresh_token` succeeds and a new `auth_token` cookie is set in the response
-- [ ] Request with expired `auth_token` + revoked `refresh_token` returns 401
+- [x] `GET /auth/me` with valid cookie returns `{id, name, email, role}`
+- [x] `GET /auth/me` without cookie returns 401
+- [x] `POST /auth/logout` clears both cookies and marks the refresh token row `revoked = 1`
+- [x] After logout, the revoked `refresh_token` cookie cannot be used to obtain a new access token
+- [x] Request with expired `auth_token` + valid `refresh_token` succeeds and a new `auth_token` cookie is set in the response
+- [x] Request with expired `auth_token` + revoked `refresh_token` returns 401
 
 ---
 
@@ -84,11 +84,11 @@ Add `POST /auth/register`: accept `{name, email, password}`, validate input (ema
 
 ### Acceptance criteria
 
-- [ ] `POST /auth/register` with valid unique email creates a `User` row with role `contributor` and `active = 1`
-- [ ] Response sets `auth_token` and `refresh_token` cookies (same as login)
-- [ ] `GET /auth/me` immediately after register returns the new user's info
-- [ ] `POST /auth/register` with a duplicate email returns 422 with a clear error message
-- [ ] New user can log into the Omeka admin panel at `/admin` with the registered credentials
+- [x] `POST /auth/register` with valid unique email creates a `User` row with role `contributor` and `active = 1`
+- [x] Response sets `auth_token` and `refresh_token` cookies (same as login)
+- [x] `GET /auth/me` immediately after register returns the new user's info
+- [x] `POST /auth/register` with a duplicate email returns 422 with a clear error message
+- [x] New user can log into the Omeka admin panel at `/admin` with the registered credentials
 
 ---
 
@@ -102,10 +102,10 @@ In `frontend/src/`, implement an `AuthContext` that stores `{ user, loading }` a
 
 ### Acceptance criteria
 
-- [ ] Public browse works with no cookies — item listings load
-- [ ] Login button is visible in the nav when unauthenticated
-- [ ] Submitting valid credentials via the login form sets session state and updates the UI to show the user's name
-- [ ] Refreshing the page restores the authenticated session (via `/auth/me` on mount)
-- [ ] Clicking logout clears session state and the UI returns to the anonymous state
-- [ ] A fetch to a protected `/api/*` route made while authenticated sends the cookie automatically
-- [ ] Privileged UI elements are hidden when the user is not logged in
+- [x] Public browse works with no cookies — item listings load
+- [x] Login button is visible in the nav when unauthenticated
+- [x] Submitting valid credentials via the login form sets session state and updates the UI to show the user's name
+- [x] Refreshing the page restores the authenticated session (via `/auth/me` on mount)
+- [x] Clicking logout clears session state and the UI returns to the anonymous state
+- [x] A fetch to a protected `/api/*` route made while authenticated sends the cookie automatically
+- [x] Privileged UI elements are hidden when the user is not logged in
