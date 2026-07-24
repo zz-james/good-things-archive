@@ -15,6 +15,16 @@
 - **New user role**: Registration defaults to `contributor`; promotion stays in Omeka admin panel
 - **Frontend HTTP client**: Native `fetch` with `credentials: 'include'` on every request
 
+## Backend structure (updated 2026-07-24)
+
+The vendored Omeka fork is gone. `backend/` is now a slim directory tracked by this repo:
+
+- **Omeka core + stock plugins/themes are fetched at Docker build time**, pinned by commit SHA in `backend/Dockerfile` `ARG`s (Omeka 3.2, `f1c7353a4`). No Omeka source lives in this repo; upgrade by bumping the pins.
+- **`backend/plugins/JwtAuth/`** — local checkout of [zz-james/omeka-plugin-JwtAuth](https://github.com/zz-james/omeka-plugin-JwtAuth) (its own git repo, gitignored here), COPY'd into the image so the edit → rebuild → test loop needs no push.
+- **`backend/overlay/`** — the two customisations layered onto stock Omeka at build: `config.ini.jwtauth.ini` (appended `[jwtauth]` config section) and `phpunit.xml` (adds the JwtAuth `Plugin Tests` suite).
+- Compose stacks unchanged: `docker-compose.yml` (dev, port 8080), `docker-compose.test.yml` (PHPUnit). `db.ini` is generated from `DB_*` env vars by `docker-entrypoint.sh` at container start.
+- Post-implementation security hardening is documented in the plugin repo's `security.md` (all high/medium/low findings fixed; plugin v0.2.0).
+
 ---
 
 ## Phase 1: Plugin Scaffold + Login + CORS
